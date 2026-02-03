@@ -32,6 +32,10 @@ tags: [todo, tracking]
 | GitHub 头像设置 | 🟡 中 | 需用户手动上传 | 用户上传压缩后的头像图片 |
 | Maestro 实际体验 | 🟢 低 | 尚未安装 | 可选：下载试用 |
 | 验证网站可访问 | 🔴 高 | 部署中 | 2-3 分钟后检查链接 |
+| Reddit 痛点爬虫 | 🔴 高 | ✅ 已配置 | cron 每小时运行，结果存 pain-points/ |
+| 豆瓣需求分析 | 🔴 高 | ✅ 已配置 | cron 每小时运行，结果存 pain-points/ |
+| Auto-Dev Agent | 🟡 中 | ✅ 已创建 | 技能文档在 skills/auto-dev-agent/ |
+| 自动部署流程 | 🟡 中 | 🟡 待完善 | 需配置 GitHub token 和项目模板 |
 
 ## 🔄 自动化任务
 
@@ -39,6 +43,10 @@ tags: [todo, tracking]
 |------|----------|------|
 | 每日日报生成 | 每天 21:00 | ✅ cron 已配置 |
 | GitHub Pages 部署 | push 后自动 | ✅ Actions 已启用 |
+| Reddit 痛点监控 | 每小时 | 🟡 待配置 |
+| 豆瓣需求抓取 | 每小时 | 🟡 待配置 |
+| 痛点分析汇总 | 每天 09:00 | 🟡 待配置 |
+| Auto-Dev Agent | 按需触发 | 🟡 待开发 |
 
 ## 📊 统计
 
