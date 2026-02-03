@@ -1,53 +1,68 @@
 ---
-title: Kuris × 阿sir 知识共享库
-date: 2026-02-03
+title: 首页
+date: 2026-02-04
 ---
 
-<div class="hero">
-  <h1>👋 Kuris × 阿sir 知识共享库</h1>
-  <p>每日精选 · 技术洞察 · 内容策展</p>
-  <p class="meta">目标：每天沉淀高价值内容，让知识长期复利</p>
+<div class="hero-header">
+  <h1>Kuris × 阿sir 知识中台</h1>
+  <p>每日内容策展系统 · 技术排查 · 知识复利</p>
+  <div class="hero-meta">
+    <span>⚡️ 每日自动更新</span>
+    <span>🧠 第二大脑</span>
+  </div>
 </div>
 
-## 📊 今日概览
+## 📡 实时监控台
 
 <div class="dashboard-grid">
-  <a class="card" href="/daily-notes/2026-02-03">
-    <h3>📈 GitHub Trending</h3>
-    <p>筛选每日最值得关注的开源项目与趋势。</p>
-    <div class="card-meta">
-      <span class="tag">GitHub</span>
-      <span>今日更新</span>
+  <a class="feature-card" href="/daily-notes/2026-02-03">
+    <div class="card-header">
+      <span class="card-icon">📈</span>
+      <h3>GitHub Trending</h3>
+    </div>
+    <p>每日筛选最值得关注的开源项目。通过 AI 提炼核心价值与应用场景。</p>
+    <div class="card-footer">
+      <span class="status-tag github">开源动态</span>
+      <span class="update-time">每日更新</span>
     </div>
   </a>
 
-  <a class="card" href="/daily-notes/2026-02-03">
-    <h3>📕 小红书热门</h3>
-    <p>高赞内容与高赞评论的结构化提炼。</p>
-    <div class="card-meta">
-      <span class="tag">小红书</span>
-      <span>每小时监控</span>
+  <a class="feature-card" href="/daily-notes/2026-02-03">
+    <div class="card-header">
+      <span class="card-icon">📕</span>
+      <h3>小红书洞察</h3>
+    </div>
+    <p>高赞内容结构化拆解。分析爆款逻辑、用户情绪与评论区高价值信息。</p>
+    <div class="card-footer">
+      <span class="status-tag rednote">流量风向</span>
+      <span class="update-time">每小时</span>
     </div>
   </a>
 
-  <a class="card" href="/daily-notes/2026-02-03">
-    <h3>🚧 技术排查</h3>
-    <p>问题记录与解决方案，避免重复踩坑。</p>
-    <div class="card-meta">
-      <span class="tag">Troubleshoot</span>
-      <span>持续整理</span>
+  <a class="feature-card" href="/daily-notes/2026-02-03">
+    <div class="card-header">
+      <span class="card-icon">🛠️</span>
+      <h3>技术排查日志</h3>
+    </div>
+    <p>记录 "How-to-Fix" 与 "Root Cause"。避免重复踩坑，建立技术知识库。</p>
+    <div class="card-footer">
+      <span class="status-tag tech">问题解决</span>
+      <span class="update-time">持续积累</span>
     </div>
   </a>
 </div>
 
-## 📅 最近更新
+## 📅 最新策展
 
-- [[2026-02-03]] - 系统初始化
+> [!tip] 每日更新说明
+> 系统会在每天 **08:00** 自动聚合前一日的数据并生成新的日报。
 
-## 🔍 快速导航
+- [[2026-02-03]] - **系统初始化与架构搭建**
 
-- [[2026-02-03]]
+## 🧭 快速入口
+
 - [[tasks|任务看板]]
+- [[2026-02-03]]
 
 ---
 
