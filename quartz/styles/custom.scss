@@ -1,3 +1,113 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+:root {
+  --radius: 10px;
+  --card-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  --card-shadow-dark: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+body {
+  font-feature-settings: "liga" on, "clig" on;
+}
+
+code {
+  font-feature-settings: "calt" off, "tnum" on;
+}
+
+.hero {
+  margin: 1.5rem 0 2rem;
+  padding: 2rem 1.5rem;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--secondary), var(--tertiary));
+  color: #fff;
+  box-shadow: var(--card-shadow);
+}
+
+.hero h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2.2rem;
+}
+
+.hero p {
+  margin: 0.2rem 0;
+  opacity: 0.92;
+}
+
+.hero .meta {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+  margin: 1rem 0 2rem;
+}
+
+.card {
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.2rem 1rem;
+  text-decoration: none;
+  display: block;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--card-shadow);
+}
+
+.darkmode .card {
+  box-shadow: var(--card-shadow-dark);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+  margin: 0 0 0.5rem;
+  color: var(--secondary);
+  font-size: 1.15rem;
+}
+
+.card p {
+  margin: 0;
+  color: var(--darkgray);
+  line-height: 1.55;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+
+.tag {
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background: var(--highlight);
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+.section-title {
+  margin-top: 1.6rem;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 1.6rem 1.2rem;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
