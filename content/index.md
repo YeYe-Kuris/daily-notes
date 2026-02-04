@@ -15,57 +15,21 @@ date: 2026-02-04
 
 ## 🎯 系统概览
 
-<div class="dashboard-grid">
+### 📊 [每日策展](./daily-curation/)
+GitHub Trending、小红书热门、Twitter行业监控的每日精选与分析。  
+`每日更新` `09:00 / 10:00`
 
-<a class="feature-card" href="./daily-curation/">
-  <div class="card-header">
-    <span class="card-icon">📊</span>
-    <h3>每日策展</h3>
-  </div>
-  <p>GitHub Trending、小红书热门、Twitter行业监控的每日精选与分析。</p>
-  <div class="card-footer">
-    <span class="status-tag github">每日更新</span>
-    <span class="update-time">09:00 / 10:00</span>
-  </div>
-</a>
+### 📚 [知识库](./knowledge/)
+技术、商业、行业、阅读、工具、洞察六大领域的结构化知识沉淀。  
+`智能分类` `22:00 同步`
 
-<a class="feature-card" href="./knowledge/">
-  <div class="card-header">
-    <span class="card-icon">📚</span>
-    <h3>知识库</h3>
-  </div>
-  <p>技术、商业、行业、阅读、工具、洞察六大领域的结构化知识沉淀。</p>
-  <div class="card-footer">
-    <span class="status-tag tech">智能分类</span>
-    <span class="update-time">22:00 同步</span>
-  </div>
-</a>
+### 🚀 [项目与开发](./projects/)
+痛点监控、Auto-Dev Agent自动开发、任务追踪与项目管理。  
+`持续迭代` `实时`
 
-<a class="feature-card" href="./projects/">
-  <div class="card-header">
-    <span class="card-icon">🚀</span>
-    <h3>项目与开发</h3>
-  </div>
-  <p>痛点监控、Auto-Dev Agent自动开发、任务追踪与项目管理。</p>
-  <div class="card-footer">
-    <span class="status-tag tech">持续迭代</span>
-    <span class="update-time">实时</span>
-  </div>
-</a>
-
-<a class="feature-card" href="./tasks/">
-  <div class="card-header">
-    <span class="card-icon">✅</span>
-    <h3>任务看板</h3>
-  </div>
-  <p>待办事项、进行中任务、已完成工作的可视化管理。</p>
-  <div class="card-footer">
-    <span class="status-tag tech">动态更新</span>
-    <span class="update-time">实时</span>
-  </div>
-</a>
-
-</div>
+### ✅ [任务看板](./tasks/)
+待办事项、进行中任务、已完成工作的可视化管理。  
+`动态更新` `实时`
 
 ---
 
