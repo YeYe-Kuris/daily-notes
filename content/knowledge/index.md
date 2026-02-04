@@ -85,7 +85,7 @@ date: 2026-02-04
 
 ### 最近更新
 
-- [[small-vram-large-model-myth|📄 小显存跑大模型? 别被技术噱头骗了]] *(2026-02-04)*
+- [[technology/ai-ml/small-vram-large-model-myth|📄 小显存跑大模型? 别被技术噱头骗了]] *(2026-02-04)*
 - [[technology/ai-ml/|AI/ML 最新动态]]
 - [[business/product/|产品知识]]
 - [[industry/semiconductor/|半导体行业]]
