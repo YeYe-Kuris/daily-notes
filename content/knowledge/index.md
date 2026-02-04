@@ -18,7 +18,7 @@ date: 2026-02-04
   </div>
   <p>AI/ML、前后端开发、DevOps、系统架构、数据工程等技术领域知识。</p>
   <div class="card-footer">
-    <span class="status-tag tech">持续更新</span>
+    <span class="status-tag tech">1 篇文章</span>
   </div>
 </a>
 
@@ -29,7 +29,7 @@ date: 2026-02-04
   </div>
   <p>产品设计、市场营销、商业战略、创业融资等商业洞察。</p>
   <div class="card-footer">
-    <span class="status-tag tech">持续更新</span>
+    <span class="status-tag">建设中</span>
   </div>
 </a>
 
@@ -40,7 +40,7 @@ date: 2026-02-04
   </div>
   <p>半导体、汽车、医疗、娱乐、电商等行业动态与趋势分析。</p>
   <div class="card-footer">
-    <span class="status-tag tech">持续更新</span>
+    <span class="status-tag">建设中</span>
   </div>
 </a>
 
@@ -51,7 +51,7 @@ date: 2026-02-04
   </div>
   <p>书籍摘要、深度文章、研究报告、案例分析等阅读笔记。</p>
   <div class="card-footer">
-    <span class="status-tag tech">持续更新</span>
+    <span class="status-tag">建设中</span>
   </div>
 </a>
 
@@ -62,7 +62,7 @@ date: 2026-02-04
   </div>
   <p>软件工具、硬件设备、工作流自动化等效率工具测评。</p>
   <div class="card-footer">
-    <span class="status-tag tech">持续更新</span>
+    <span class="status-tag">建设中</span>
   </div>
 </a>
 
@@ -73,7 +73,7 @@ date: 2026-02-04
   </div>
   <p>趋势分析、心理学、哲学思维、跨领域洞察与思考。</p>
   <div class="card-footer">
-    <span class="status-tag tech">持续更新</span>
+    <span class="status-tag">建设中</span>
   </div>
 </a>
 
@@ -81,19 +81,11 @@ date: 2026-02-04
 
 ---
 
-## 🔍 快速导航
+## 📝 最新文章
 
-### 最近更新
-
-- [[technology/ai-ml/small-vram-large-model-myth|📄 小显存跑大模型? 别被技术噱头骗了]] *(2026-02-04)*
-- [[technology/ai-ml/|AI/ML 最新动态]]
-- [[business/product/|产品知识]]
-- [[industry/semiconductor/|半导体行业]]
-- [[reading/books/|读书笔记]]
-
-### 热门标签
-
-- #AI #大模型 #半导体 #产品设计 #创业
+| 文章 | 分类 | 日期 |
+|------|------|------|
+| [[technology/ai-ml/small-vram-large-model-myth\|小显存跑大模型? 别被技术噱头骗了]] | AI/ML | 2026-02-04 |
 
 ---
 
