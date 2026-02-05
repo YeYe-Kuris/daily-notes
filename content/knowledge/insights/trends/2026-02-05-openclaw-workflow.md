@@ -1,7 +1,7 @@
 ---
 title: OpenClaw 飞书钉钉多渠道协作实战
 date: 2026-02-05
-source: [接入飞书和钉钉的OpenClaw 到底能玩点啥？](https://mp.weixin.qq.com/s/59obxCEbUH_2PZ-L_z9Mxw)
+source: "接入飞书和钉钉的OpenClaw到底能玩点啥 - https://mp.weixin.qq.com/s/59obxCEbUH_2PZ-L_z9Mxw"
 category: insights
 subcategory: trends
 tags: [AI-Agent, OpenClaw, 飞书, 钉钉, 工作流, 自动化]
