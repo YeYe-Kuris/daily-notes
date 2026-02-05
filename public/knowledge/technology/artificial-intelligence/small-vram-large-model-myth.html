@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr"><head><title>小显存跑大模型? 别被技术噱头骗了</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Inter:ital,wght@0,400;0,600;1,400;1,600&amp;family=JetBrains Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Kuris × 阿sir 知识共享库"/><meta property="og:title" content="小显存跑大模型? 别被技术噱头骗了"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="小显存跑大模型? 别被技术噱头骗了"/><meta name="twitter:description" content="文章摘要: 最近Twitter上热传的”4GB显卡跑70B大模型”技术引发热议。本文通过真实价格数据和性能对比，揭示这种”省钱方案”背后的真相：看似门槛低，实则成本不低、体验极差。真正的大模型本地部署，需要的是均衡配置，而不是极端妥协。 关键词: 大模型本地部署, GPU显存, 内存价格, AI工作站, 性价比分析 一、现象：“4GB显卡跑70B模型”是什么？ 1.1 技术原理：Layer-wise Inference（逐层推理） 最近Twitter上一条推文火了： “Run 70B LLMs on a 4GB GPU with layer-wise inference and memory ..."/><meta property="og:description" content="文章摘要: 最近Twitter上热传的”4GB显卡跑70B大模型”技术引发热议。本文通过真实价格数据和性能对比，揭示这种”省钱方案”背后的真相：看似门槛低，实则成本不低、体验极差。真正的大模型本地部署，需要的是均衡配置，而不是极端妥协。 关键词: 大模型本地部署, GPU显存, 内存价格, AI工作站, 性价比分析 一、现象：“4GB显卡跑70B模型”是什么？ 1.1 技术原理：Layer-wise Inference（逐层推理） 最近Twitter上一条推文火了： “Run 70B LLMs on a 4GB GPU with layer-wise inference and memory ..."/><meta property="og:image:alt" content="文章摘要: 最近Twitter上热传的”4GB显卡跑70B大模型”技术引发热议。本文通过真实价格数据和性能对比，揭示这种”省钱方案”背后的真相：看似门槛低，实则成本不低、体验极差。真正的大模型本地部署，需要的是均衡配置，而不是极端妥协。 关键词: 大模型本地部署, GPU显存, 内存价格, AI工作站, 性价比分析 一、现象：“4GB显卡跑70B模型”是什么？ 1.1 技术原理：Layer-wise Inference（逐层推理） 最近Twitter上一条推文火了： “Run 70B LLMs on a 4GB GPU with layer-wise inference and memory ..."/><meta property="og:image" content="https://yeye-kuris.github.io/daily-notes/static/og-image.png"/><meta property="og:image:url" content="https://yeye-kuris.github.io/daily-notes/static/og-image.png"/><meta name="twitter:image" content="https://yeye-kuris.github.io/daily-notes/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="yeye-kuris.github.io/daily-notes"/><meta property="og:url" content="https://yeye-kuris.github.io/daily-notes/knowledge/technology/artificial-intelligence/small-vram-large-model-myth"/><meta property="twitter:url" content="https://yeye-kuris.github.io/daily-notes/knowledge/technology/artificial-intelligence/small-vram-large-model-myth"/><link rel="icon" href="../../../static/icon.png"/><meta name="description" content="文章摘要: 最近Twitter上热传的”4GB显卡跑70B大模型”技术引发热议。本文通过真实价格数据和性能对比，揭示这种”省钱方案”背后的真相：看似门槛低，实则成本不低、体验极差。真正的大模型本地部署，需要的是均衡配置，而不是极端妥协。 关键词: 大模型本地部署, GPU显存, 内存价格, AI工作站, 性价比分析 一、现象：“4GB显卡跑70B模型”是什么？ 1.1 技术原理：Layer-wise Inference（逐层推理） 最近Twitter上一条推文火了： “Run 70B LLMs on a 4GB GPU with layer-wise inference and memory ..."/><meta name="generator" content="Quartz"/><link href="../../../index.css" rel="stylesheet" type="text/css" data-persist="true"/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL1VzZXJzL3lleWUvLm9wZW5jbGF3L3dvcmtzcGFjZS9kYWlseS1ub3Rlcy9xdWFydHovY29tcG9uZW50cy9zdHlsZXMiLCJzb3VyY2VzIjpbIm1lcm1haWQuaW5saW5lLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTtFQUNBOztBQUdGO0VBQ0U7OztBQUtGO0VBQ0U7RUFDQTs7O0FBSUo7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTtFQUNBOztBQUlKO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFOztBQUlGO0VBQ0U7RUFDQTtFQUNBIiwic291cmNlc0NvbnRlbnQiOlsiLmV4cGFuZC1idXR0b24ge1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGZsb2F0OiByaWdodDtcbiAgcGFkZGluZzogMC40cmVtO1xuICBtYXJnaW46IDAuM3JlbTtcbiAgcmlnaHQ6IDA7IC8vIE5PVEU6IHJpZ2h0IHdpbGwgYmUgc2V0IGluIG1lcm1haWQuaW5saW5lLnRzXG4gIGNvbG9yOiB2YXIoLS1ncmF5KTtcbiAgYm9yZGVyLWNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tbGlnaHQpO1xuICBib3JkZXI6IDFweCBzb2xpZDtcbiAgYm9yZGVyLXJhZGl1czogNXB4O1xuICBvcGFjaXR5OiAwO1xuICB0cmFuc2l0aW9uOiAwLjJzO1xuXG4gICYgPiBzdmcge1xuICAgIGZpbGw6IHZhcigtLWxpZ2h0KTtcbiAgICBmaWx0ZXI6IGNvbnRyYXN0KDAuMyk7XG4gIH1cblxuICAmOmhvdmVyIHtcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgYm9yZGVyLWNvbG9yOiB2YXIoLS1zZWNvbmRhcnkpO1xuICB9XG5cbiAgJjpmb2N1cyB7XG4gICAgb3V0bGluZTogMDtcbiAgfVxufVxuXG5wcmUge1xuICAmOmhvdmVyID4gLmV4cGFuZC1idXR0b24ge1xuICAgIG9wYWNpdHk6IDE7XG4gICAgdHJhbnNpdGlvbjogMC4ycztcbiAgfVxufVxuXG4jbWVybWFpZC1jb250YWluZXIge1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIGNvbnRhaW46IGxheW91dDtcbiAgei1pbmRleDogOTk5O1xuICBsZWZ0OiAwO1xuICB0b3A6IDA7XG4gIHdpZHRoOiAxMDB2dztcbiAgaGVpZ2h0OiAxMDB2aDtcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcbiAgZGlzcGxheTogbm9uZTtcbiAgYmFja2Ryb3AtZmlsdGVyOiBibHVyKDRweCk7XG4gIGJhY2tncm91bmQ6IHJnYmEoMCwgMCwgMCwgMC41KTtcblxuICAmLmFjdGl2ZSB7XG4gICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xuICB9XG5cbiAgJiA+ICNtZXJtYWlkLXNwYWNlIHtcbiAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgICBib3JkZXItcmFkaXVzOiA1cHg7XG4gICAgcG9zaXRpb246IGZpeGVkO1xuICAgIHRvcDogNTAlO1xuICAgIGxlZnQ6IDUwJTtcbiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZSgtNTAlLCAtNTAlKTtcbiAgICBoZWlnaHQ6IDgwdmg7XG4gICAgd2lkdGg6IDgwdnc7XG4gICAgb3ZlcmZsb3c6IGhpZGRlbjtcblxuICAgICYgPiAubWVybWFpZC1jb250ZW50IHtcbiAgICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgICAgIHRyYW5zZm9ybS1vcmlnaW46IDAgMDtcbiAgICAgIHRyYW5zaXRpb246IHRyYW5zZm9ybSAwLjFzIGVhc2U7XG4gICAgICBvdmVyZmxvdzogdmlzaWJsZTtcbiAgICAgIG1pbi1oZWlnaHQ6IDIwMHB4O1xuICAgICAgbWluLXdpZHRoOiAyMDBweDtcblxuICAgICAgcHJlIHtcbiAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICBib3JkZXI6IG5vbmU7XG4gICAgICB9XG5cbiAgICAgIHN2ZyB7XG4gICAgICAgIG1heC13aWR0aDogbm9uZTtcbiAgICAgICAgaGVpZ2h0OiBhdXRvO1xuICAgICAgfVxuICAgIH1cblxuICAgICYgPiAubWVybWFpZC1jb250cm9scyB7XG4gICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICBib3R0b206IDIwcHg7XG4gICAgICByaWdodDogMjBweDtcbiAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICBnYXA6IDhweDtcbiAgICAgIHBhZGRpbmc6IDhweDtcbiAgICAgIGJhY2tncm91bmQ6IHZhcigtLWxpZ2h0KTtcbiAgICAgIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgICBib3JkZXItcmFkaXVzOiA2cHg7XG4gICAgICBib3gtc2hhZG93OiAwIDJweCA0cHggcmdiYSgwLCAwLCAwLCAwLjEpO1xuICAgICAgei1pbmRleDogMjtcblxuICAgICAgLm1lcm1haWQtY29udHJvbC1idXR0b24ge1xuICAgICAgICBkaXNwbGF5OiBmbGV4O1xuICAgICAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgICAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICAgICAgd2lkdGg6IDMycHg7XG4gICAgICAgIGhlaWdodDogMzJweDtcbiAgICAgICAgcGFkZGluZzogMDtcbiAgICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgICBjb2xvcjogdmFyKC0tZGFyayk7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IDRweDtcbiAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuICAgICAgICBmb250LXNpemU6IDE2cHg7XG4gICAgICAgIGZvbnQtZmFtaWx5OiB2YXIoLS1ib2R5Rm9udCk7XG4gICAgICAgIHRyYW5zaXRpb246IGFsbCAwLjJzIGVhc2U7XG5cbiAgICAgICAgJjpob3ZlciB7XG4gICAgICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgICAgfVxuXG4gICAgICAgICY6YWN0aXZlIHtcbiAgICAgICAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZVkoMXB4KTtcbiAgICAgICAgfVxuXG4gICAgICAgIC8vIFN0eWxlIHRoZSByZXNldCBidXR0b24gZGlmZmVyZW50bHlcbiAgICAgICAgJjpudGgtY2hpbGQoMikge1xuICAgICAgICAgIHdpZHRoOiBhdXRvO1xuICAgICAgICAgIHBhZGRpbmc6IDAgMTJweDtcbiAgICAgICAgICBmb250LXNpemU6IDE0cHg7XG4gICAgICAgIH1cbiAgICAgIH1cbiAgICB9XG4gIH1cbn1cbiJdfQ== */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" data-persist="true"/><script src="../../../prescript.js" type="application/javascript" data-persist="true"></script><script type="application/javascript" data-persist="true">const fetchData = fetch("../../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://yeye-kuris.github.io/daily-notes/index.xml"/></head><body data-slug="knowledge/technology/artificial-intelligence/small-vram-large-model-myth"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../../..">Kuris × 阿sir 知识共享库</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>搜索</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="搜索些什么" placeholder="搜索些什么"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="暗色模式"><title>暗色模式</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="亮色模式"><title>亮色模式</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="阅读模式"><title>阅读模式</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-37"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>探索</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-37" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../knowledge/">知识库</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../knowledge/technology/">Technology</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../../knowledge/technology/artificial-intelligence/">Artificial Intelligence</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>小显存跑大模型? 别被技术噱头骗了</a></div></nav><h1 class="article-title">小显存跑大模型? 别被技术噱头骗了</h1><p show-comma="true" class="content-meta"><time datetime="2026-02-03T16:00:00.000Z">2026年2月04日</time><span>11分钟阅读</span></p><ul class="tags"><li><a href="../../../tags/AI" class="internal tag-link">AI</a></li><li><a href="../../../tags/GPU" class="internal tag-link">GPU</a></li><li><a href="../../../tags/LLM" class="internal tag-link">LLM</a></li><li><a href="../../../tags/hardware" class="internal tag-link">hardware</a></li><li><a href="../../../tags/cost-effective" class="internal tag-link">cost-effective</a></li></ul></div></div><article class="popover-hint"><p><strong>文章摘要</strong>: 最近Twitter上热传的”4GB显卡跑70B大模型”技术引发热议。本文通过真实价格数据和性能对比，揭示这种”省钱方案”背后的真相：看似门槛低，实则成本不低、体验极差。真正的大模型本地部署，需要的是均衡配置，而不是极端妥协。</p>
+<p><strong>关键词</strong>: 大模型本地部署, GPU显存, 内存价格, AI工作站, 性价比分析</p>
+<hr/>
+<h2 id="一现象4gb显卡跑70b模型是什么">一、现象：“4GB显卡跑70B模型”是什么？<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#一现象4gb显卡跑70b模型是什么" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="11-技术原理layer-wise-inference逐层推理">1.1 技术原理：Layer-wise Inference（逐层推理）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#11-技术原理layer-wise-inference逐层推理" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>最近Twitter上一条推文火了：</p>
+<blockquote>
+<p>“Run 70B LLMs on a 4GB GPU with layer-wise inference and memory optimization”</p>
+</blockquote>
+<p><strong>技术原理</strong>很简单：</p>
+<ul>
+<li>传统方式：一次性把整个70B模型（约140GB）加载到显存</li>
+<li>逐层推理：<strong>每次只加载1层</strong>（约0.5-1GB），计算完就卸载到内存，再加载下一层</li>
+</ul>
+<pre><code>输入 → [加载Layer 1到GPU] → 计算 → 卸载到CPU
+    → [加载Layer 2到GPU] → 计算 → 卸载到CPU
+    → ...重复70-80次
+    → 输出
+</code></pre>
+<h3 id="12-为什么它看起来很美">1.2 为什么它看起来很美？<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#12-为什么它看起来很美" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>宣传点</th><th>吸引力</th></tr></thead><tbody><tr><td>”4GB显卡就能跑70B”</td><td>门槛低，显卡便宜</td></tr><tr><td>”量化可选”</td><td>还能进一步优化</td></tr><tr><td>”内存优化”</td><td>听起来很专业</td></tr></tbody></table></div>
+<p><strong>推文数据</strong>（截至2026-02-04）：</p>
+<ul>
+<li>2043个赞</li>
+<li>2427个收藏</li>
+<li>12.4万浏览</li>
+<li>39条评论（大部分是质疑）</li>
+</ul>
+<hr/>
+<h2 id="二真相性能有多差">二、真相：性能有多差？<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#二真相性能有多差" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="21-实测速度慢到不能用">2.1 实测速度：慢到不能用<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#21-实测速度慢到不能用" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>方案</th><th>速度</th><th>生成500字耗时</th></tr></thead><tbody><tr><td>正常70B（A100 80GB）</td><td>20-30 tokens/秒</td><td><strong>15-25秒</strong></td></tr><tr><td>逐层推理（4GB GPU）</td><td><strong>0.7 tokens/分钟</strong></td><td><strong>2-3小时</strong></td></tr></tbody></table></div>
+<p><strong>网友评论</strong>（来自Twitter真实反馈）：</p>
+<ul>
+<li>@ZenMagnets: “No mention of token generation speed, because it’s limited by physics to be abysmally slow”</li>
+<li>@Ithilbor: “Trade-off: 30 sec per words”</li>
+<li>@NOOROU: “A token per hour maybe?”（讽刺）</li>
+<li>@AutismEgregore: “0.7 t/m”（实测0.7 tokens/分钟）</li>
+</ul>
+<p><strong>专业评论</strong>（@HarwoodLabs）：</p>
+<blockquote>
+<p>“Layer-wise inference trades latency for memory. Works great until you need real-time response or your pipeline hits concurrent requests. The 4GB constraint is clever but most production workloads will saturate that optimization pretty quickly.”</p>
+</blockquote>
+<p>翻译：逐层推理用延迟换内存。在需要实时响应或并发请求时就会有问题。</p>
+<h3 id="22-为什么慢">2.2 为什么慢？<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#22-为什么慢" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>瓶颈在数据传输</strong>：</p>
+<ul>
+<li>GPU计算很快（毫秒级）</li>
+<li>但每层都要从<strong>内存 → 显存</strong>传输（PCIe带宽限制）</li>
+<li>大部分时间花在<strong>等待数据传输</strong>，而不是计算</li>
+</ul>
+<hr/>
+<h2 id="三成本分析真的省钱吗">三、成本分析：真的省钱吗？<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#三成本分析真的省钱吗" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="31-隐藏成本64gb内存价格京东实时数据-2026-02-04">3.1 隐藏成本：64GB内存价格（京东实时数据 2026-02-04）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#31-隐藏成本64gb内存价格京东实时数据-2026-02-04" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>很多人忽略了一点：<strong>模型虽然不在显存，但必须在内存里</strong>。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>品牌</th><th>型号</th><th>频率</th><th>价格</th></tr></thead><tbody><tr><td>铨兴</td><td>64G (32×2) DDR5</td><td>5600</td><td><strong>¥5,185</strong></td></tr><tr><td>GEIL金邦</td><td>64G (32×2) DDR5</td><td>5600</td><td><strong>¥5,198</strong></td></tr><tr><td>阿斯加特</td><td>64G (32×2) DDR5</td><td>6000</td><td><strong>¥5,299</strong></td></tr><tr><td>新乐士</td><td>64G (32×2) DDR5</td><td>6000/6400</td><td>¥6,489</td></tr><tr><td>三星</td><td>64G (32×2) DDR5</td><td>4800</td><td>¥6,598</td></tr><tr><td>英睿达</td><td>64G (32×2) DDR5</td><td>6400</td><td>¥6,799</td></tr><tr><td>美商海盗船</td><td>64G (32×2) DDR5</td><td>6400</td><td>¥7,599</td></tr><tr><td>金士顿 FURY</td><td>64G (32×2) DDR5</td><td>6400</td><td>¥7,799</td></tr></tbody></table></div>
+<p><strong>最低价格</strong>：<strong>¥5,185</strong>（铨兴/GEIL）</p>
+<h3 id="32-两种方案成本对比">3.2 两种方案成本对比<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#32-两种方案成本对比" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="方案a省钱逐层推理方案">方案A：“省钱”逐层推理方案<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#方案a省钱逐层推理方案" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>组件</th><th>配置</th><th>价格</th></tr></thead><tbody><tr><td>GPU</td><td>RTX 3050 4GB</td><td>¥1,200</td></tr><tr><td>内存</td><td>DDR5 64GB</td><td>¥5,200</td></tr><tr><td>CPU</td><td>i5-13600K（频繁搬运需要好CPU）</td><td>¥2,000</td></tr><tr><td>主板</td><td>Z790 DDR5</td><td>¥1,500</td></tr><tr><td>硬盘</td><td>1TB NVMe</td><td>¥500</td></tr><tr><td>电源</td><td>600W</td><td>¥300</td></tr><tr><td>机箱</td><td>普通</td><td>¥200</td></tr><tr><td><strong>总计</strong></td><td></td><td><strong>¥10,900</strong></td></tr></tbody></table></div>
+<p><strong>性能</strong>：0.7 tokens/分钟（生成500字需<strong>2-3小时</strong>）</p>
+<h4 id="方案b专业ai工作站以fusionxpark为例">方案B：专业AI工作站（以fusionXpark™为例）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#方案b专业ai工作站以fusionxpark为例" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>根据<a href="https://www.xfusion.com/en/product/fusionxpark" class="external">xFusion官网<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>的<strong>实测配置</strong>：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>参数</th><th>FusionXpark™ GB10</th></tr></thead><tbody><tr><td><strong>架构</strong></td><td>NVIDIA Grace Blackwell</td></tr><tr><td><strong>GPU</strong></td><td>Blackwell架构，6144 CUDA核心</td></tr><tr><td><strong>CPU</strong></td><td>20核Arm (10×Cortex-X925 + 10×Cortex-A725)</td></tr><tr><td><strong>内存</strong></td><td><strong>128GB LPDDR5x</strong> 统一内存架构</td></tr><tr><td><strong>Tensor性能</strong></td><td><strong>1 PFLOPS</strong> (FP4)</td></tr><tr><td><strong>存储</strong></td><td>1TB/2TB/4TB NVMe</td></tr><tr><td><strong>网络</strong></td><td>10GE + ConnectX-7 SmartNIC + Wi-Fi 7</td></tr><tr><td><strong>重量/尺寸</strong></td><td>1.2kg / 150×150×50.5mm</td></tr><tr><td><strong>预装系统</strong></td><td>NVIDIA DGX OS</td></tr></tbody></table></div>
+<p><strong>性能指标</strong>（来自官方）：</p>
+<ul>
+<li>推理：支持<strong>2000亿参数</strong>模型</li>
+<li>微调：支持<strong>700亿参数</strong>模型</li>
+<li>集群模式：支持<strong>4050亿参数</strong>模型</li>
+</ul>
+<p><strong>实际速度预估</strong>：20-30 tokens/秒（生成500字需<strong>15-25秒</strong>）</p>
+<blockquote>
+<p>⚠️ <strong>价格说明</strong>：官网显示”Get Pricing”，需联系销售获取报价（400-080-6888）。参考竞品NVIDIA DGX Spark约$3,000（~¥21,500）。</p>
+</blockquote>
+<h3 id="33-性价比计算">3.3 性价比计算<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#33-性价比计算" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>指标</th><th>方案A（逐层）</th><th>方案B（专业工作站）</th></tr></thead><tbody><tr><td>初投资</td><td>¥10,900</td><td>¥20,000-30,000（预估）</td></tr><tr><td>生成500字耗时</td><td>2小时</td><td>20秒</td></tr><tr><td>一天能处理的任务数</td><td>~12个</td><td>~4,320个</td></tr><tr><td><strong>单位任务成本</strong></td><td><strong>¥908/任务</strong></td><td><strong>¥4.9/任务</strong></td></tr></tbody></table></div>
+<p><strong>结论</strong>：专业工作站效率是逐层推理的<strong>360倍</strong>，长期看反而更省钱！</p>
+<hr/>
+<h2 id="关于本文的教训数据必须核实">关于本文的教训：数据必须核实<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#关于本文的教训数据必须核实" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="我们之前犯的错误">我们之前犯的错误<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#我们之前犯的错误" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>在撰写本文初稿时，我<strong>假设</strong>fusionXpark使用RTX 4090显卡，并给出了”¥21,300”的预估价格。<strong>这是错误的</strong>。</p>
+<p><strong>错误原因</strong>：</p>
+<ul>
+<li>❌ 没有查阅官方网站</li>
+<li>❌ 凭经验猜测配置（“入门级=4090”）</li>
+<li>❌ 给出了未经核实的价格数据</li>
+</ul>
+<p><strong>真实情况</strong>（经官网核实）：</p>
+<ul>
+<li>✅ fusionXpark使用<strong>NVIDIA GB10 Grace Blackwell Superchip</strong>（非RTX 4090）</li>
+<li>✅ 内置<strong>128GB统一内存</strong>（非传统内存条）</li>
+<li>✅ 官网未公开价格，需联系销售</li>
+</ul>
+<h3 id="为什么这很重要">为什么这很重要？<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#为什么这很重要" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>这个错误恰恰证明了本文的核心观点：</p>
+<blockquote>
+<p><strong>不要被表面参数误导，要查证真实数据</strong></p>
+</blockquote>
+<p>我犯的错误（猜测配置）和”4GB跑70B”营销号的错误（隐瞒速度缺陷）本质相同：<strong>选择性呈现信息，误导读者</strong>。</p>
+<h3 id="修正措施">修正措施<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#修正措施" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>已核实</strong>：fusionXpark官方规格来自<a href="https://www.xfusion.com/en/product/fusionxpark" class="external">xfusion.com<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li><strong>已删除</strong>：未经核实的4090配置假设</li>
+<li><strong>已添加</strong>：数据来源说明和教训反思</li>
+</ol>
+<p><strong>读者监督</strong>：如发现本文其他数据问题，请指出，我会立即核实修正。</p>
+<hr/>
+<h2 id="四用户体验不只是快慢">四、用户体验：不只是快慢<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#四用户体验不只是快慢" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="41-实际场景对比">4.1 实际场景对比<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#41-实际场景对比" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>场景：你想问AI一个技术问题</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>方案</th><th>体验</th></tr></thead><tbody><tr><td><strong>方案A（逐层）</strong></td><td>输入问题 → 等待2小时 → 得到回答 → 发现理解有误 → 再问 → 再等2小时 → 一天只能问4-5个问题</td></tr><tr><td><strong>方案B（fusionXpark）</strong></td><td>输入问题 → 20秒得到回答 → 追问 → 马上回复 → 流畅对话</td></tr></tbody></table></div>
+<p><strong>网友评论</strong>（@pugafran）：</p>
+<blockquote>
+<p>“You haven’t really updated it in a year. I tried to use it for the qwen3 coder a month ago, but it doesn’t support it.”</p>
+</blockquote>
+<h3 id="42-其他问题">4.2 其他问题<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#42-其他问题" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>无法并发</strong>：一次只能处理一个请求</li>
+<li><strong>不支持新模型</strong>：项目已一年未更新，不支持Qwen3、DeepSeek V3.2等</li>
+<li><strong>CPU占用高</strong>：频繁搬运数据导致CPU满载</li>
+<li><strong>噪音和功耗</strong>：长时间高负载运行</li>
+</ol>
+<hr/>
+<h2 id="五为什么会有这种噱头">五、为什么会有这种”噱头”？<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#五为什么会有这种噱头" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="51-技术可行性--实用价值">5.1 技术可行性 ≠ 实用价值<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#51-技术可行性--实用价值" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>技术上可行吗？<strong>可行</strong>。
+实用吗？<strong>几乎不可用</strong>。</p>
+<p>这就像是：</p>
+<blockquote>
+<p>“你用一辆自行车也能环游中国” —— 技术上可行，但正常人不会这么干。</p>
+</blockquote>
+<h3 id="52-营销号的套路">5.2 营销号的套路<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#52-营销号的套路" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>套路</th><th>手法</th><th>结果</th></tr></thead><tbody><tr><td>强调”能跑”</td><td>不提速度</td><td>用户以为能用</td></tr><tr><td>强调”省钱”</td><td>不提内存成本</td><td>用户低估总成本</td></tr><tr><td>强调”技术突破”</td><td>不提维护状态</td><td>用户不知道项目已 abandon</td></tr></tbody></table></div>
+<hr/>
+<h2 id="六正确的大模型本地部署方案">六、正确的大模型本地部署方案<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#六正确的大模型本地部署方案" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="61-需求分层">6.1 需求分层<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#61-需求分层" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>需求</th><th>推荐配置</th><th>预算</th></tr></thead><tbody><tr><td><strong>入门体验</strong></td><td>RTX 4060Ti 16GB + 32GB内存</td><td>¥6,000-7,000</td></tr><tr><td><strong>日常使用</strong></td><td>RTX 4090 24GB + 32GB内存</td><td>¥20,000-25,000</td></tr><tr><td><strong>专业开发</strong></td><td>RTX 4090 24GB ×2 + 64GB内存</td><td>¥35,000-45,000</td></tr><tr><td><strong>企业级</strong></td><td>fusionXpark专业版 / DGX Spark</td><td>¥40,000+</td></tr></tbody></table></div>
+<h3 id="62-关键认知">6.2 关键认知<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#62-关键认知" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ol>
+<li><strong>显存是硬门槛</strong>：推理速度跟显存大小没有线性关系，但<strong>能不能跑</strong>是0和1的区别</li>
+<li><strong>内存也很重要</strong>：32GB是底线，64GB更舒适</li>
+<li><strong>别迷信”黑科技”</strong>：真正可靠的方案都是均衡配置，没有银弹</li>
+</ol>
+<hr/>
+<h2 id="七结论">七、结论<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#七结论" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="71-对用户的建议">7.1 对用户的建议<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#71-对用户的建议" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>如果你预算有限</strong>：</p>
+<ul>
+<li>买RTX 4060Ti 16GB（¥3,000），跑7B-13B模型流畅</li>
+<li>别追求70B，先从小模型开始</li>
+</ul>
+<p><strong>如果你需要70B</strong>：</p>
+<ul>
+<li>老老实实买大显存显卡（RTX 4090 24GB起步）</li>
+<li>或考虑fusionXpark这类专业方案</li>
+<li>别信”4GB跑70B”的噱头</li>
+</ul>
+<h3 id="72-对fusionxpark的启示">7.2 对fusionXpark的启示<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#72-对fusionxpark的启示" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>这个案例告诉我们：</p>
+<ol>
+<li><strong>教育市场很重要</strong>：很多用户被噱头误导，需要正确引导</li>
+<li><strong>强调体验而不是参数</strong>：“能用”和”好用”是两回事</li>
+<li><strong>数据说话</strong>：用真实价格和性能数据说服用户</li>
+</ol>
+<hr/>
+<h2 id="参考数据">参考数据<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#参考数据" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>数据类型</th><th>来源</th><th>采集时间</th></tr></thead><tbody><tr><td><strong>DDR5内存价格</strong></td><td>京东自营/旗舰店</td><td>2026-02-04实时</td></tr><tr><td><strong>fusionXpark规格</strong></td><td><a href="https://www.xfusion.com/en/product/fusionxpark" class="external">xFusion官网<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td><td>2026-02-04核实</td></tr><tr><td><strong>性能数据</strong></td><td>Twitter用户实测反馈</td><td>2026-02-04</td></tr><tr><td><strong>技术原理</strong></td><td>Layer-wise inference论文</td><td>arxiv.org/abs/2212.09720</td></tr></tbody></table></div>
+<h3 id="数据核实方法说明">数据核实方法说明<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#数据核实方法说明" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>京东价格</strong>：通过浏览器工具访问京东搜索页面，抓取实时价格
+<strong>fusionXpark配置</strong>：直接访问xFusion英文官网产品页面获取技术规格
+<strong>速度数据</strong>：Twitter推文评论区用户实测反馈汇总</p>
+<hr/>
+<p><strong>最后更新</strong>: 2026-02-04<br/>
+<strong>数据状态</strong>: 已核实（官网+实时电商数据）</p>
+<p><strong>勘误记录</strong>:</p>
+<ul>
+<li>2026-02-04 21:35: 修正fusionXpark配置（之前误写为RTX 4090，实际为NVIDIA GB10芯片）</li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>关系图谱</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-12" aria-expanded="true"><h3>目录</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#一现象4gb显卡跑70b模型是什么" data-for="一现象4gb显卡跑70b模型是什么">一、现象：“4GB显卡跑70B模型”是什么？</a></li><li class="depth-1"><a href="#11-技术原理layer-wise-inference逐层推理" data-for="11-技术原理layer-wise-inference逐层推理">1.1 技术原理：Layer-wise Inference（逐层推理）</a></li><li class="depth-1"><a href="#12-为什么它看起来很美" data-for="12-为什么它看起来很美">1.2 为什么它看起来很美？</a></li><li class="depth-0"><a href="#二真相性能有多差" data-for="二真相性能有多差">二、真相：性能有多差？</a></li><li class="depth-1"><a href="#21-实测速度慢到不能用" data-for="21-实测速度慢到不能用">2.1 实测速度：慢到不能用</a></li><li class="depth-1"><a href="#22-为什么慢" data-for="22-为什么慢">2.2 为什么慢？</a></li><li class="depth-0"><a href="#三成本分析真的省钱吗" data-for="三成本分析真的省钱吗">三、成本分析：真的省钱吗？</a></li><li class="depth-1"><a href="#31-隐藏成本64gb内存价格京东实时数据-2026-02-04" data-for="31-隐藏成本64gb内存价格京东实时数据-2026-02-04">3.1 隐藏成本：64GB内存价格（京东实时数据 2026-02-04）</a></li><li class="depth-1"><a href="#32-两种方案成本对比" data-for="32-两种方案成本对比">3.2 两种方案成本对比</a></li><li class="depth-1"><a href="#33-性价比计算" data-for="33-性价比计算">3.3 性价比计算</a></li><li class="depth-0"><a href="#关于本文的教训数据必须核实" data-for="关于本文的教训数据必须核实">关于本文的教训：数据必须核实</a></li><li class="depth-1"><a href="#我们之前犯的错误" data-for="我们之前犯的错误">我们之前犯的错误</a></li><li class="depth-1"><a href="#为什么这很重要" data-for="为什么这很重要">为什么这很重要？</a></li><li class="depth-1"><a href="#修正措施" data-for="修正措施">修正措施</a></li><li class="depth-0"><a href="#四用户体验不只是快慢" data-for="四用户体验不只是快慢">四、用户体验：不只是快慢</a></li><li class="depth-1"><a href="#41-实际场景对比" data-for="41-实际场景对比">4.1 实际场景对比</a></li><li class="depth-1"><a href="#42-其他问题" data-for="42-其他问题">4.2 其他问题</a></li><li class="depth-0"><a href="#五为什么会有这种噱头" data-for="五为什么会有这种噱头">五、为什么会有这种”噱头”？</a></li><li class="depth-1"><a href="#51-技术可行性--实用价值" data-for="51-技术可行性--实用价值">5.1 技术可行性 ≠ 实用价值</a></li><li class="depth-1"><a href="#52-营销号的套路" data-for="52-营销号的套路">5.2 营销号的套路</a></li><li class="depth-0"><a href="#六正确的大模型本地部署方案" data-for="六正确的大模型本地部署方案">六、正确的大模型本地部署方案</a></li><li class="depth-1"><a href="#61-需求分层" data-for="61-需求分层">6.1 需求分层</a></li><li class="depth-1"><a href="#62-关键认知" data-for="62-关键认知">6.2 关键认知</a></li><li class="depth-0"><a href="#七结论" data-for="七结论">七、结论</a></li><li class="depth-1"><a href="#71-对用户的建议" data-for="71-对用户的建议">7.1 对用户的建议</a></li><li class="depth-1"><a href="#72-对fusionxpark的启示" data-for="72-对fusionxpark的启示">7.2 对fusionXpark的启示</a></li><li class="depth-0"><a href="#参考数据" data-for="参考数据">参考数据</a></li><li class="depth-1"><a href="#数据核实方法说明" data-for="数据核实方法说明">数据核实方法说明</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>反向链接</h3><ul id="list-2" class="overflow"><li><a href="../../../knowledge/technology/artificial-intelligence/" class="internal">Artificial Intelligence</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript" data-persist="true">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module" data-persist="true">function E(a,e){if(!a)return;function t(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function n(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}a?.addEventListener("click",t),window.addCleanup(()=>a?.removeEventListener("click",t)),document.addEventListener("keydown",n),window.addCleanup(()=>document.removeEventListener("keydown",n))}function f(a){for(;a.firstChild;)a.removeChild(a.firstChild)}var m=class{constructor(e,t){this.container=e;this.content=t;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),t=this.onMouseMove.bind(this),n=this.onMouseUp.bind(this),o=this.onTouchStart.bind(this),r=this.onTouchMove.bind(this),i=this.onTouchEnd.bind(this),s=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",t),document.addEventListener("mouseup",n),this.container.addEventListener("touchstart",o,{passive:!1}),document.addEventListener("touchmove",r,{passive:!1}),document.addEventListener("touchend",i),window.addEventListener("resize",s),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",t),()=>document.removeEventListener("mouseup",n),()=>this.container.removeEventListener("touchstart",o),()=>document.removeEventListener("touchmove",r),()=>document.removeEventListener("touchend",i),()=>window.removeEventListener("resize",s))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let t=this.createButton("+",()=>this.zoom(.1)),n=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(n),e.appendChild(o),e.appendChild(t),this.container.appendChild(e)}createButton(e,t){let n=document.createElement("button");return n.textContent=e,n.className="mermaid-control-button",n.addEventListener("click",t),window.addCleanup(()=>n.removeEventListener("click",t)),n}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}onTouchStart(e){if(e.touches.length!==1)return;this.isDragging=!0;let t=e.touches[0];this.startPan={x:t.clientX-this.currentPan.x,y:t.clientY-this.currentPan.y}}onTouchMove(e){if(!this.isDragging||e.touches.length!==1)return;e.preventDefault();let t=e.touches[0];this.currentPan={x:t.clientX-this.startPan.x,y:t.clientY-this.startPan.y},this.updateTransform()}onTouchEnd(){this.isDragging=!1}zoom(e){let t=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),n=this.content.getBoundingClientRect(),o=n.width/2,r=n.height/2,i=t-this.scale;this.currentPan.x-=o*i,this.currentPan.y-=r*i,this.scale=t,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){let t=this.content.querySelector("svg").getBoundingClientRect(),n=t.width/this.scale,o=t.height/this.scale;this.scale=1,this.currentPan={x:(this.container.clientWidth-n)/2,y:(this.container.clientHeight-o)/2},this.updateTransform()}},T=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],y;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;y||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let t=y.default,n=new WeakMap;for(let r of e)n.set(r,r.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let c=n.get(s);c&&(s.innerHTML=c)}let r=T.reduce((s,c)=>(s[c]=window.getComputedStyle(document.documentElement).getPropertyValue(c),s),{}),i=document.documentElement.getAttribute("saved-theme")==="dark";t.initialize({startOnLoad:!1,securityLevel:"loose",theme:i?"dark":"base",themeVariables:{fontFamily:r["--codeFont"],primaryColor:r["--light"],primaryTextColor:r["--darkgray"],primaryBorderColor:r["--tertiary"],lineColor:r["--darkgray"],secondaryColor:r["--secondary"],tertiaryColor:r["--tertiary"],clusterBkg:r["--light"],edgeLabelBackground:r["--highlight"]}}),await t.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let r=0;r<e.length;r++){let v=function(){let g=l.querySelector("#mermaid-space"),h=l.querySelector(".mermaid-content");if(!h)return;f(h);let w=i.querySelector("svg").cloneNode(!0);h.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new m(g,h)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},i=e[r],s=i.parentElement,c=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(c),L=c.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),E(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript" data-persist="true"></script><script src="../../../postscript.js" type="module" data-persist="true"></script></html>
