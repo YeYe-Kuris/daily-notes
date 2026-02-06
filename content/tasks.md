@@ -17,6 +17,7 @@ tags: [todo, tracking]
 | 知识库重构 | 2026-02-04 23:30 | 完成分类结构调整 |
 | 启用 self-improving-agent hook | 2026-02-04 23:25 | 自动提醒已启用 |
 | 删除无用 skills | 2026-02-04 23:46 | 删除 apple-mail, auto-dev-agent, market-audit-agent |
+| 每日总结 | 2026-02-06 21:00 | 已发送Feishu，覆盖系统修复/Agent上线/数据亮点 |
 
 ## ❌ 待办 (Todo)
 | 任务 | 优先级 | 阻塞原因 | 下一步动作 |
