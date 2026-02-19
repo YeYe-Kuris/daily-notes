@@ -39,6 +39,11 @@ tags: [todo, tracking]
 | 多平台筛选与评估 | ✅ 完成 | 2-17已完成初步评估 | 结论：小红书(风控中)>B站>即刻>抖音>X |
 | Kuris 视频 Pipeline | 🔴 高 | 方案已定 | 见下方拆解 |
 | 多平台 Agent 架构 | 🔴 高 | 待设计 | 每个平台独立Agent+独立浏览器实例，解决抢控制权问题，共享核心记忆 |
+| ADB 手机方案：新号认证通过后首测 | 🔴 高 | 等认证 | 认证通过后用纯 adb 方案跑巡逻，验证防风控效果 |
+| ADB 手机方案：actions.py 操作顺序随机化 | 🔴 高 | 待开发 | 点赞/收藏/评论顺序 random.shuffle，避免固定行为指纹 |
+| ADB 手机方案：patrol.py 适配纯 adb | 🟡 中 | 待开发 | 去掉 uiautomator2 依赖，用 core.py 的 dump_ui + tap + swipe |
+| ADB 手机方案：私信功能开发 | 🟡 中 | 待开发 | App 端私信完整支持，用 clip.dex 中文输入 |
+| ADB 手机方案：publish.py 适配纯 adb | 🟡 中 | 待开发 | 发笔记流程用 core.py 重写 |
 
 ---
 
