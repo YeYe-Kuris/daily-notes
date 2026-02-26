@@ -1,7 +1,7 @@
 ---
 title: 任务追踪
 date: 2026-02-04
-updated: 2026-02-20
+updated: 2026-02-26
 tags: [todo, tracking]
 ---
 
@@ -12,7 +12,7 @@ tags: [todo, tracking]
 |------|------|------|----------|
 | ADB 手机方案开发 | 进行中 | core.py 防风控层已完成，等新号认证 | - |
 | Kuris persona 系统 Phase 1 | 进行中 | core.json + quirks.json + prompt_builder 已完成，通知监听已跑通 | - |
-| xhs2 小德日常运营（浏览器） | 运行中 | 巡逻 + 回评论 cron 正常运行 | 持续 |
+| xhs2 小德日常运营（浏览器） | 运行中 | 巡逻 + 回评论 cron 持续运行，已加防重规则与 brain 挂载，正在回归观察 | 持续 |
 
 ## ❌ 待办 (Todo)
 
@@ -24,6 +24,8 @@ tags: [todo, tracking]
 | ADB：patrol.py 适配纯 adb | 待开发 | 去掉 uiautomator2 依赖，用 core.py |
 | 自动化运营 toB 方向验证 | 待调研 | 调研中小商家小红书代运营需求和定价 |
 | 小红书运营 skill 产品化 | 待整理 | 蹭流/回复/发帖/粉丝采集打包成 OpenClaw skill |
+| xhs2 Web 对外产品化（30账号并发） | 待方案评审 | 先用 2 账号试点调试，完善稳定性与风控后再扩到 30 账号 |
+| xhs2 回评论重复回复回归观察（DeepRead Planet） | 需连续观测 | 观察 3-5 轮 run，确认无 self_echo 与同用户连回 |
 | ADB 方案产品化（MCP/SaaS） | 先验证封号风险 | persona 模板化 + 多账号支持 + Web Dashboard，给 MCN 用 |
 | Kuris 视频 Pipeline | 方案已定 | 见下方拆解 |
 
@@ -35,6 +37,7 @@ tags: [todo, tracking]
 | ADB：publish.py 适配纯 adb | 待开发 | 发笔记流程用 core.py 重写 |
 | 粉丝关系系统 | 待开发 | 记住粉丝、新粉欢迎、老粉互动 |
 | 多平台 Agent 架构 | 待设计 | 每平台独立 Agent + 独立浏览器，共享记忆 |
+| Agent 替人筛选设计（idea） | 待细化 | 先梳理筛选目标、决策维度、交互流程，输出方案 v0 |
 | 即时热点快评 | 待设计 | 遇到大热点即时发短内容，抢时效 |
 
 ### 🟢 低优先级 / 后续
@@ -55,6 +58,8 @@ tags: [todo, tracking]
 ## ✅ 已完成 (Done)
 | 任务 | 完成时间 | 备注 |
 |------|----------|------|
+| xhs2 回评论防重升级 | 2026-02-26 | 已加通知结构防误判 + self_echo 过滤 + 同用户单轮1条 + 去重路径锁定 |
+| xhs2 回评论 Kuris brain 挂载 | 2026-02-26 | 启用任务前置读取 PERSONA/MEMORY/STRATEGY/VOICE + VOICE.runtime.json |
 | settext.dex 零 APK 中文输入 | 2026-02-22 | UiAutomation ACTION_SET_TEXT，替代 clip.dex |
 | Kuris persona 文件系统 | 2026-02-22 | core.json + quirks.json + world-info + prompt_builder.py |
 | 通知监听 watcher.py | 2026-02-22 | dumpsys + 截图红点双模式，SQLite 队列 |
