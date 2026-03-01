@@ -1,7 +1,7 @@
 ---
 title: 任务追踪
 date: 2026-02-04
-updated: 2026-02-26
+updated: 2026-03-01
 tags: [todo, tracking]
 ---
 
@@ -13,6 +13,11 @@ tags: [todo, tracking]
 | ADB 手机方案开发 | 进行中 | core.py 防风控层已完成，等新号认证 | - |
 | Kuris persona 系统 Phase 1 | 进行中 | core.json + quirks.json + prompt_builder 已完成，通知监听已跑通 | - |
 | xhs2 小德日常运营（浏览器） | 运行中 | 巡逻 + 回评论 cron 持续运行，已加防重规则与 brain 挂载，正在回归观察 | 持续 |
+| Agent 替人筛选设计（idea） | 进行中 | 已输出方案 v0：reports/agent-screening-design-v0-2026-03-01.md | - |
+| 模型分层效果监控 | 进行中 | 已建立基线：reports/model-tier-monitoring-2026-03-01.md，后续按天追加 | 持续 |
+| 自动化运营 toB 方向验证 | 进行中 | 已启动验证计划 v0：reports/tob-demand-validation-plan-2026-03-01.md，待执行首批访谈 | - |
+| 粉丝关系系统 | 进行中 | 已输出方案 v0：reports/fan-relationship-system-v0-2026-03-01.md，待接入 tier 判定与冷却规则 | - |
+| 多平台 Agent 架构 | 进行中 | 已输出架构草案：reports/multi-platform-agent-architecture-v0-2026-03-01.md，待拆分平台 PoC | - |
 
 ## ❌ 待办 (Todo)
 
@@ -20,9 +25,7 @@ tags: [todo, tracking]
 | 任务 | 阻塞原因 | 下一步动作 |
 |------|----------|------------|
 | ADB：新号认证通过后首测 | 等认证 | 纯 adb 方案跑巡逻，验证防风控效果 |
-| ADB：actions.py 操作顺序随机化 | 待开发 | 点赞/收藏/评论顺序 random.shuffle |
 | ADB：patrol.py 适配纯 adb | 待开发 | 去掉 uiautomator2 依赖，用 core.py |
-| 自动化运营 toB 方向验证 | 待调研 | 调研中小商家小红书代运营需求和定价 |
 | 小红书运营 skill 产品化 | 待整理 | 蹭流/回复/发帖/粉丝采集打包成 OpenClaw skill |
 | xhs2 Web 对外产品化（30账号并发） | 待方案评审 | 先用 2 账号试点调试，完善稳定性与风控后再扩到 30 账号 |
 | xhs2 回评论重复回复回归观察（DeepRead Planet） | 需连续观测 | 观察 3-5 轮 run，确认无 self_echo 与同用户连回 |
@@ -35,17 +38,11 @@ tags: [todo, tracking]
 | ADB：私信功能开发 | ✅ 基本完成 | settext.dex 中文输入 + processor.py 自动回复 |
 | ADB：通知驱动自动回复 | 进行中 | watcher.py 已跑通，processor.py 已接入 LLM |
 | ADB：publish.py 适配纯 adb | 待开发 | 发笔记流程用 core.py 重写 |
-| 粉丝关系系统 | 待开发 | 记住粉丝、新粉欢迎、老粉互动 |
-| 多平台 Agent 架构 | 待设计 | 每平台独立 Agent + 独立浏览器，共享记忆 |
-| Agent 替人筛选设计（idea） | 待细化 | 先梳理筛选目标、决策维度、交互流程，输出方案 v0 |
-| 即时热点快评 | 待设计 | 遇到大热点即时发短内容，抢时效 |
 
 ### 🟢 低优先级 / 后续
 | 任务 | 说明 |
 |------|------|
 | sendevent 触摸方案 | 需要 root，暂不做。root 后可启用内核级零痕迹触摸 |
-| 运营策略文档 | 把差异化策略整理成文档 |
-| 模型分层效果监控 | 持续观察 cron 成本和成功率 |
 
 ### 🎮 独立游戏（长线项目）
 | 任务 | 说明 |
@@ -58,6 +55,12 @@ tags: [todo, tracking]
 ## ✅ 已完成 (Done)
 | 任务 | 完成时间 | 备注 |
 |------|----------|------|
+| Kuris character-profile.json | 2026-03-01 | 已完成并落盘：projects/kuris-video-pipeline/character-profile.json |
+| Kuris 角色定义图锁定（v1） | 2026-03-01 | 已锁定主参考图：projects/kuris-video-pipeline/reference-image-lock.md |
+| ADB：actions.py 操作顺序随机化 | 2026-03-01 | 已在 projects/adb-xhs/actions.py 落地 random.shuffle，互动顺序不再固定 |
+| 即时热点快评执行手册 v0 | 2026-03-01 | 已输出：reports/hot-topic-fast-comment-playbook-v0-2026-03-01.md |
+| 运营策略文档 | 2026-03-01 | 已输出初版：reports/xhs-ops-strategy-v0-2026-03-01.md |
+| 抖音 ADB 脚本化与文档 | 2026-03-01 | 已输出合规稳定版脚本，含轨迹扰动与包名校验，存放在 projects/douyin-adb-safe |
 | xhs2 回评论防重升级 | 2026-02-26 | 已加通知结构防误判 + self_echo 过滤 + 同用户单轮1条 + 去重路径锁定 |
 | xhs2 回评论 Kuris brain 挂载 | 2026-02-26 | 启用任务前置读取 PERSONA/MEMORY/STRATEGY/VOICE + VOICE.runtime.json |
 | settext.dex 零 APK 中文输入 | 2026-02-22 | UiAutomation ACTION_SET_TEXT，替代 clip.dex |
@@ -83,8 +86,8 @@ tags: [todo, tracking]
 ### Phase 1：素材准备
 | # | 任务 | 优先级 | 状态 | 说明 |
 |---|------|--------|------|------|
-| 1.1 | 确定 Kuris 角色定义图 | 🔴 高 | 待做 | 选一张现有的 Kuris 正面参考图 |
-| 1.2 | 编写 character-profile.json | 🔴 高 | 待做 | 角色描述卡 |
+| 1.1 | 确定 Kuris 角色定义图 | 🔴 高 | ✅ 已完成 | 已锁定主参考图：media/kuris-newyear.png（见 reference-image-lock.md） |
+| 1.2 | 编写 character-profile.json | 🔴 高 | ✅ 已完成 | 角色描述卡已落盘：projects/kuris-video-pipeline/character-profile.json |
 | 1.3 | 完善分镜脚本 | 🔴 高 | ✅ 初版完成 | 7 镜头分镜已完成，需确认最终版 |
 
 ### Phase 2：视频生成
